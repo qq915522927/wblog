@@ -1,4 +1,157 @@
 {% extends 'post/base.html' %}
+{% block head %}
+    <script>
+    $(function () {
+        simplemde = new SimpleMDE({ element: $(".textarea")[0] });
+
+    })
+
+    comment_info ={'owner_user':{{request.session.uid}},
+                        'post_id':{{post.id}} ,
+                        'target_user_id':{{ post.author_id }} };
+    function get_comments(post_id) {
+
+        $.get('/api/comment/'+post_id,function (data) {
+
+            count = data.count;
+
+            $('#count').html('共'+count+'条评论');
+            comments = data.comments;
+            response = $('.response_content');
+            if(comments.length==0){
+                response.append('\<h3>没有评论，快抢沙发！</h3>')
+
+            }
+            else{
+                response.html('');
+                for(index in comments){
+                    var p=comments[index].parent;
+{#                        加载第一级评论#}
+
+                    if (p === null){
+
+
+                        content = '	\<div id=\"'+comments[index].id+'\" class=\"media response-info\"\>'+
+'						\<div class=\"media-left response-text-left\"\>'+
+'							\<a href=\"#\"\>'+
+'								\<img class=\"media-object\" src=\"images/c6.jpg\" alt=\"\"/\>'+
+'							\</a\>'+
+'							\<h5\>\<a href=\"#\"\>'+comments[index].owner_user[1]+'\</a\>\</h5\>'+
+'						\</div\>'+
+'						\<div class=\"media-body response-text-right\"\>'+
+'							\<p\>'+comments[index].content+'\</p\>'+
+'							\<ul\>'+
+'								\<li\>'+comments[index].created+'\</li\>'+
+'								\<li\>\<a id=\"reply\" href=\"javascript:go_comment({{ post.id }}'+','+comments[index].id+',{{ request.session.uid }}'+','+comments[index].owner_user[0]+',\''+comments[index].owner_user[1]+'\'\);\"\>回复\</a\>\</li\>'+
+'							\</ul\>'+
+'						\</div\>'+
+'						\<div class=\"clearfix\"\> \</div\>'+
+'					\</div\>';
+                        response.append(content);
+
+
+                    }
+                    else {
+
+                        parent_ele = $('#'+comments[index]['parent']).children('.response-text-right');
+                         content = '	\<div id=\"'+comments[index].id+'\" class=\"media response-info\"\>'+
+'						\<div class=\"media-left response-text-left\"\>'+
+'							\<h5\>\<a href=\"#\"\>'+comments[index].owner_user[1]+'\</a>↘↘↘↘\<a\>'+comments[index].target_user[1]+'\</a\>\</h5\>'+
+'						\</div\>'+
+'						\<div class=\"media-body response-text-right\"\>'+
+'							\<p\>'+comments[index].content+'\</p\>'+
+'							\<ul\>'+
+'								\<li\>'+comments[index].created+'\</li\>'+
+'								\<li\>\<a id=\"reply\" href=\"javascript:go_comment({{ post.id }}'+','+comments[index].parent+',{{ request.session.uid }}'+','+comments[index].owner_user[0]+',\''+comments[index].owner_user[1]+'\'\);\"\>回复\</a\>\</li\>'+
+'							\</ul\>'+
+'						\</div\>'+
+'						\<div class=\"clearfix\"\> \</div\>'+
+'					\</div\>';
+                         parent_ele.append(content);
+                    }
+
+                }
+
+
+            }
+
+        })
+
+    }
+
+    function go_comment(post_id,parent_id,owner,target_user_id,target_user_name) {
+            $('.coment-form').show();
+            comment_info['post_id'] = post_id;
+            comment_info['parent'] = parent_id;
+            comment_info['owner_user'] = owner;
+            comment_info['target_user_id'] = target_user_id;
+
+
+            $('html,body').animate({scrollTop:$('.coment-form').offset().top}, 800);
+        if (target_user_name==''){
+              simplemde.value("说出你的想法!!!");;
+
+        }
+        else{
+             simplemde.value("正在回复"+target_user_name+'……');
+
+
+    }}
+    function cannel_comment() {
+        if(confirm('确认放弃评论？')){
+             $('.textarea').attr('id','');
+
+        }
+
+    }
+
+
+
+    function commit_comment() {
+        comment_info['content'] = simplemde.value();
+         comment_info['csrfmiddlewaretoken']='{{ csrf_token }}';
+        $.post('/api/comment',comment_info,function (data) {
+            if(data.data=='True'){
+                $('#p_success').show();
+                 $('html,body').animate({scrollTop:$('.response').offset().top}, 800);
+                get_comments({{ post.id }});
+                 $('.coment-form').hide();
+
+            }
+            else{alert('评论失败！')}
+
+        })
+
+    }
+
+
+
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock head %}
+
+{% block run_js %}
+
+   $('.coment-form').hide();
+    get_comments({{ post.id }});
+
+    $('#but_comment').click(function () {
+        commit_comment();
+    })
+
+       $('#btn_response').click(function () {
+        go_comment({{ post.id }},'',{{ request.session.uid }},{{ post.author_id }},'');
+
+    })
+
+
+
+{#    $('.textarea').blur(function () {#}
+{#            cannel_comment()#}
+{#        })#}
+
+{% endblock run_js %}
 
 {% block left_content %}
 
@@ -78,148 +231,50 @@
 					</ul>
 					<div class="clearfix"></div>
 					<!--related-posts-->
-				<div class="row related-posts">
-					<h4>Articles You May Like</h4>
-					<div class="col-xs-6 col-md-3 related-grids">
-						<a href="single.html" class="thumbnail">
-							<img src="images/f2.jpg" alt=""/>
-						</a>
-						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>
-					</div>
-					<div class="col-xs-6 col-md-3 related-grids">
-						<a href="single.html" class="thumbnail">
-							<img src="images/f1.jpg" alt=""/>
-						</a>
-						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>
-					</div>
-					<div class="col-xs-6 col-md-3 related-grids">
-						<a href="single.html" class="thumbnail">
-							<img src="images/f3.jpg" alt=""/>
-						</a>
-						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>
-					</div>
-					<div class="col-xs-6 col-md-3 related-grids">
-						<a href="single.html" class="thumbnail">
-							<img src="images/f6.jpg" alt=""/>
-						</a>
-						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>
-					</div>
-				</div>
+{#				<div class="row related-posts">#}
+{#					<h4>Articles You May Like</h4>#}
+{#					<div class="col-xs-6 col-md-3 related-grids">#}
+{#						<a href="single.html" class="thumbnail">#}
+{#							<img src="images/f2.jpg" alt=""/>#}
+{#						</a>#}
+{#						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>#}
+{#					</div>#}
+{#					<div class="col-xs-6 col-md-3 related-grids">#}
+{#						<a href="single.html" class="thumbnail">#}
+{#							<img src="images/f1.jpg" alt=""/>#}
+{#						</a>#}
+{#						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>#}
+{#					</div>#}
+{#					<div class="col-xs-6 col-md-3 related-grids">#}
+{#						<a href="single.html" class="thumbnail">#}
+{#							<img src="images/f3.jpg" alt=""/>#}
+{#						</a>#}
+{#						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>#}
+{#					</div>#}
+{#					<div class="col-xs-6 col-md-3 related-grids">#}
+{#						<a href="single.html" class="thumbnail">#}
+{#							<img src="images/f6.jpg" alt=""/>#}
+{#						</a>#}
+{#						<h5><a href="single.html">Lorem Ipsum is simply</a></h5>#}
+{#					</div>#}
+{#				</div>#}
 				<!--//related-posts-->
 
 				<div class="response">
-					<h4>Responses</h4>
-					<div class="media response-info">
-						<div class="media-left response-text-left">
-							<a href="#">
-								<img class="media-object" src="images/c1.jpg" alt=""/>
-							</a>
-							<h5><a href="#">Username</a></h5>
-						</div>
-						<div class="media-body response-text-right">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-								sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-							<ul>
-								<li>Sep 21, 2015</li>
-								<li><a href="single.html">Reply</a></li>
-							</ul>
-							<div class="media response-info">
-								<div class="media-left response-text-left">
-									<a href="#">
-										<img class="media-object" src="images/c2.jpg" alt=""/>
-									</a>
-									<h5><a href="#">Username</a></h5>
-								</div>
-								<div class="media-body response-text-right">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-										sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-									<ul>
-										<li>July 17, 2015</li>
-										<li><a href="single.html">Reply</a></li>
-									</ul>
-								</div>
-								<div class="clearfix"> </div>
-							</div>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-					<div class="media response-info">
-						<div class="media-left response-text-left">
-							<a href="#">
-								<img class="media-object" src="images/c3.jpg" alt=""/>
-							</a>
-							<h5><a href="#">Username</a></h5>
-						</div>
-						<div class="media-body response-text-right">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-								sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-							<ul>
-								<li>June 21, 2015</li>
-								<li><a href="single.html">Reply</a></li>
-							</ul>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-					<div class="media response-info">
-						<div class="media-left response-text-left">
-							<a href="#">
-								<img class="media-object" src="images/c4.jpg" alt=""/>
-							</a>
-							<h5><a href="#">Username</a></h5>
-						</div>
-						<div class="media-body response-text-right">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-								sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-							<ul>
-								<li>Mar 28, 2015</li>
-								<li><a href="single.html">Reply</a></li>
-							</ul>
-							<div class="media response-info">
-								<div class="media-left response-text-left">
-									<a href="#">
-										<img class="media-object" src="images/c5.jpg" alt=""/>
-									</a>
-									<h5><a href="#">Username</a></h5>
-								</div>
-								<div class="media-body response-text-right">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-										sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-									<ul>
-										<li>Feb 19, 2015</li>
-										<li><a href="single.html">Reply</a></li>
-									</ul>
-								</div>
-								<div class="clearfix"> </div>
-							</div>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-					<div class="media response-info">
-						<div class="media-left response-text-left">
-							<a href="#">
-								<img class="media-object" src="images/c6.jpg" alt=""/>
-							</a>
-							<h5><a href="#">Username</a></h5>
-						</div>
-						<div class="media-body response-text-right">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of passages of Lorem Ipsum available,
-								sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-							<ul>
-								<li>Jan 20, 2015</li>
-								<li><a href="single.html">Reply</a></li>
-							</ul>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
+					<h4 id="count">所有回复</h4>
+                    <button id='btn_response' value="回复">发表评论</button>
+                <div class="response_content"></div>
 				</div>
-				<div class="coment-form">
-					<h4>Leave your comment</h4>
+                    <div class="comment_fla">
+                        <p id="p_success">评论成功!</p>
+                        <p id ='P_failed'>评论失败!</p>
+                    </div>
+				<div class="coment-form" id="coment-form">
+					<h4>发表评论</h4>
 					<form>
-						<input type="text" value="Name " onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
-						<input type="email" value="Email (will not be published)*" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email (will not be published)*';}" required="">
-						<input type="text" value="Website" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Website';}" required="">
-						<textarea onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Comment...';}" required="">Your Comment...</textarea>
-						<input type="submit" value="Submit Comment" >
+
+						<textarea class="textarea" id="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Comment...';}" required="">Your Comment...</textarea>
+						<input id="but_comment" type="button" value="Submit Comment" >
 					</form>
 				</div>
 				<div class="clearfix"></div>

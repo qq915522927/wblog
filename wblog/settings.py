@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'w_post',
     'w_auth',
+    'w_comment',
 ]
 
 MIDDLEWARE = [

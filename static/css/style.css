@@ -1156,13 +1156,13 @@ a.pp-title:hover {
     color: #84754e;
 }
 .response-text-right p {
-    font-size: 0.95em;
+    font-size: 0.10em;
     margin: 0 0 1em;
     line-height: 2em;
     color: #AFAFAF;
 }
 .media-left.response-text-left a {
-    color: #000;
+    color: #204d74;
     font-size: 1em;
     display: block;
     margin-top: 6px;
@@ -1184,6 +1184,7 @@ a.pp-title:hover {
 }
 .response {
     padding: 1em;
+
 }
 .scrollbar{
 	float: left;
@@ -1589,6 +1590,8 @@ ul.categories li a:hover {
     font-size: 1.5em;
     font-weight: 600;
 	margin-bottom:1.5em;
+	width: 100px;
+	float:left;
 }
 .related-posts{
 	margin:4em 0;	
@@ -1628,7 +1631,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 .response-text-left h5{
   font-weight: 400;
   font-size: 14px;
-  margin: 1em 0 0 0;
+  margin: 0 0 0 0;
 }
 .response-text-right p {
   color: #727272;
@@ -1659,15 +1662,43 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 }
 .media {
     margin-top: 35px;
+	float:left;
 }
+
 .coment-form  {
 	margin-top:6em;
+	width: 100%;
+	float:left;
 }
 .coment-form h4 {
     color: #000000;
     font-size: 1.5em;
     font-weight: 600;
     margin-bottom: 1.5em;
+	width: 30%;
+}
+
+.response button{
+	float:left;
+	background-color: #1f1f1f;
+	color: #fff;
+	margin-left:300px;
+	width:100px;
+	height:37px;
+	font-size: 18px;
+}
+.response button:link,.response button:visited{
+	float:left;
+	background-color: #1f1f1f;
+	color: #fff;
+	margin-left:300px;
+	width:100px;
+	height:37px;
+	font-size: 18px;
+}
+
+.response button:hover{
+	background-color: #84754e;
 }
 .coment-form input[type="text"] {
   display: block;
@@ -3624,3 +3655,6 @@ address a:hover {
 
 .post_content p{
 	color: #000000;font-size: 20px}
+comment_fla{float:left ;
+clear: both;}
+.comment_fla p{display:none;color: red;}
