@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from hashlib import sha1
 from .models import User
+from my_core.my_core import upload,del_upload
+import os
+from w_post.models import Post,Classify
 # Create your views here.
 def login(request):
     if request.method == 'GET':
@@ -52,6 +55,7 @@ def login(request):
             #     # request.COOKIES['userinfo']=[user.uname,user.upwd]
             request.session['username'] = uname
             request.session['uid'] = user.id
+            request.session['upic'] = user.avatar
             return red
 
         else:
@@ -86,7 +90,7 @@ def register(request):
         user = User()
         user.uname = uname
         user.upwd = pwd
-        user.uemil = uemail
+        user.uemail = uemail
         user.hash_pwd()#自定义的方法
         user.save()
 
@@ -101,3 +105,58 @@ def check_uname_is_exist(request):
     # print(count)
     # 返回json字典，判断是存在，
     return JsonResponse({'count': count})
+
+def user_base_info(request,uid):
+    if request.method == 'GET':
+        uid = int(uid)
+        user = User.objects.get(id=uid)
+
+        context = {'title':'%s的个人信息'%user.uname,
+                   'user':user,}
+        return  render(request,'w_auth/base_info.html',context)
+    if request.method == 'POST':
+        uid = int(request.session.get('uid'))
+        user = User.objects.get(id=uid)
+        user.uemail = request.POST.get('uemail')
+        user.save()
+        return redirect('/user/base_info')
+
+
+def upload_avatar(request):
+    if request.method =='POST':
+        file = request.FILES.get('avatar',None)
+
+        name = upload(file)
+        if name:
+            uid=request.session.get('uid')
+            user = User.objects.get(id=uid)
+            del_upload(os.path.split(user.avatar)[1])
+            user.avatar = '/static/upload/'+name
+            user.save()
+            return redirect('/user/base_info')
+
+    return JsonResponse({'data':'false'})
+
+def my_posts(request,uid):
+    uid = int(uid)
+    user = User.objects.get(id=uid)
+    try:
+        c = request.GET.get('c')
+    except:
+        pass
+    if c:
+        posts = Post.my_objects.filter(author_id=uid).filter(status='published').filter(isDelete=False).filter(classify_id=int(c))
+
+    else:
+        posts = Post.my_objects.filter(author_id=uid).filter(status='published').filter(isDelete=False)
+
+
+    classifies = Classify.objects.filter(owner_id=uid)
+    for classifiy in classifies:
+        classifiy.pcount = classifiy.post_set.filter(author_id=uid).filter(status='published').filter(isDelete=False).count()
+    context={'user':user,
+             'posts':posts,
+             'classifies':classifies,
+             'pcount':len(posts),}
+
+    return render(request,'w_auth/my_posts.html',context)

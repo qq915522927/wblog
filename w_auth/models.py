@@ -6,6 +6,8 @@ class User(models.Model):
     upwd = models.CharField(max_length=40)
     uemail = models.CharField(max_length=30)
     role = models.ForeignKey('w_auth.Role',default='1')
+    avatar = models.CharField(max_length=150,default='',null=True)
+
     def __str__(self):
         return self.uname
     def hash_pwd(self):

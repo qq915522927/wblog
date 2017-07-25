@@ -3658,3 +3658,69 @@ address a:hover {
 comment_fla{float:left ;
 clear: both;}
 .comment_fla p{display:none;color: red;}
+
+.user_center_container{
+	float: right;
+	width: 95%;
+
+	clear:both;
+	margin-bottom:300px;
+}
+.user_center_left{width: 20%;text-align:center;float: left;}
+.user_center_left li{margin-top:20px;}
+
+.user_center_right{float: left;width: 80%;}
+
+
+.footer{
+
+	float:left;
+}
+.avatar img{width: 54px;height: 54px;border-radius:27px;}
+.img_avatar{width: 40px !important;height: 40px;border-radius:20px;float: right;margin-right: 7%;}
+.base tr{height:80px;}
+.myhide{display:none;}
+
+.post_list{width: 70%;float: left;}
+.side_classify{width: 25%;float: left;}
+
+.author{float: left;}
+.ptitle{float: left;font-size: 30px;}
+.abstract{float: left;clear: left;font-size: 20px;}
+.post_one{float: left;clear: left;margin-top: 30px;}
+.right_post_list{float: left;margin-left: 50px;}
+
+.name{}
+.blue-link{float: left;}
+.time{font-size: 10px;	}
+.avatar{float: left;}
+.side_classify li{font-size: 20px;margin-top: 20px;}
+
+.write_btn {float: right;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    margin: 8px 15px 0;
+    border-radius: 15px !important;
+    font-size: 14px;
+    color: #fff;
+    background: #ea6f5a; }
+
+.btn{display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;}

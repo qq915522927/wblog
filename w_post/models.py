@@ -36,12 +36,13 @@ class Post(models.Model):
         return self.title
 
     def save(self, *args,**kwargs):
-
-        self.slug =slugify(str(datetime.now().timestamp())+str(self.title.encode('utf8'))+'_'+self.slug)
+        self.status='published'
+        self.slug =slugify(str(datetime.now().timestamp())+str(self.title.encode('utf8')))
         return super(Post,self).save(*args,**kwargs)
 
     def seri(self):
-        d = {'title':self.title,
+        d = {'id':self.id,
+            'title':self.title,
              'author':self.author.uname,
              'publish':self.publish.strftime('%Y/%M/%d'),
              'clik':self.click,
@@ -52,6 +53,20 @@ class Post(models.Model):
 
              }
         return d
+
+    def my_init(self,title,author_id,body,cid):
+        self.title = title
+        self.author_id = author_id
+        self.body = body
+        self.classify_id = cid
 class Classify(models.Model):
     title = models.CharField(max_length=50)
     owner = models.ForeignKey(User)
+    def seri(self):
+        d = {
+            'id' : self.id,
+            'title':self.title
+
+
+        }
+        return d

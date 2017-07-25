@@ -1,0 +1,57 @@
+{% extends 'w_auth/base.html' %}
+
+{% block head %}
+   <script>
+
+   function change_avatar() {
+
+        $('.myhide').show();
+
+
+   }
+   </script>
+{% endblock %}
+{% block right_content %}
+
+<table>
+    <thead>
+    <tr><th class="setting-head responsive-head"></th> <th></th>
+    </tr>
+    </thead>
+    <tbody class="base"><tr><td class="top-line">
+    <div class="avatar">
+        {% if user.avatar %}
+        <img src="{{ user.avatar }}">
+        {% else %} <img src="/static/upload/default_avatar.jpeg">
+        {% endif %}
+
+    </div></td>
+
+    <td class="top-line">
+          {% if user.id == request.session.uid %}
+        <a class="btn btn-hollow" href="javascript:change_avatar();">更改头像:</a>
+        <form class="myhide" method="post" action="/user/upload_avatar" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="avatar"><p>上传头像</p></label>
+        <input name="avatar" unselectable="on" type="file" >
+            <input type="submit" value="确认">
+        </form>
+        {% endif %}
+    </td></tr>
+    <tr>
+    <td class="setting-title">
+            用户名:
+          </td> <td>{{ user.uname }}</td></tr> <tr>
+    <td class="setting-title">
+            用户分组:
+          </td> <td>{{ user.role.rtitle }}</td></tr>
+
+<tr><td class="setting-title">电子邮件: {{ user.uemail }} </td>  <td>
+
+    {% if user.id == request.session.uid %}
+    <form method="post" action="/user/base_info">{% csrf_token %}|修改电子邮箱:<input type="submit"  value="发送" class="btn btn-hollow pull-right"> <input name='uemail' type="email" placeholder="请输入你的常用邮箱"></form></td></tr>
+    {% else %}
+    {% endif %}
+</tbody></table>
+
+{% endblock %}

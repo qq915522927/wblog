@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from .models import Post
+from .models import Post,Classify
 def post(request):
     '''
     根据页数，排序方式，所属分类来返回文章列表页，
@@ -35,4 +35,28 @@ def post(request):
     l =[ post.seri() for post in page]
 
     d = {'posts':l}
+    return JsonResponse(d)
+
+
+
+def classify(request):
+    u = request.GET.get('u')
+    c_l= Classify.objects.filter(owner_id=int(u))
+
+    l = [c.seri() for c in c_l]
+    d = {'data':l}
+    return JsonResponse(d)
+
+def get_posts_by_cid(request,c):
+    uid = request.session.get('uid')
+    c = int(c)
+    posts = Post.my_objects.filter(author_id=uid).filter(isDelete=False).filter(classify_id=c)
+    l = [ p.seri() for p in posts]
+    d = {'data':l}
+    return  JsonResponse(d)
+
+def get_post(request,pid):
+    pid=int(pid)
+    post = Post.my_objects.get(id=pid)
+    d = post.seri()
     return JsonResponse(d)

@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head>
+<title>{{ title }}</title>
+<link href="/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+     <link href="/static/css/write.css"  rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/static/js/jquery.min.js"></script>
+<!-- Custom Theme files -->
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Express News Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- for bootstrap working -->
+	<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+     <script src="/static/js/write.js" ></script>
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<!-- //for bootstrap working -->
+<!-- web-fonts -->
+<script>
+    $(function () {
+        get_classify({{ request.session.uid }});
+
+        get_posts({{ cid }});
+
+        simplemde = new SimpleMDE({ element: $(".textarea")[0] });
+    })
+</script>
+
+
+
+</head>
+
+  <body>
+
+
+
+
+<div class="write_l">
+<div class="to_index"><a href="/">回首页</a></div>
+<li class="new_classify"><a href="/add_c">新建分类</a><a class="" id="{{ cid }}" href="/add_p">新建文章</a></li>
+
+
+    <ul class="list_classify">
+
+    </ul>
+</div>
+<div class="write_m">
+   <div class="post_list"><a class="title">文章标题</a><a class="del_post">删除</a></div>
+   <div class="post_list"><a class="title">文章标题</a><a class="del_post">删除</a></div>
+    <div class="post_list"><a class="title">文章标题</a><a class="del_post">删除</a></div>
+   <div class="post_list"><a class="title">文章标题</a><a class="del_post">删除</a></div>
+
+
+</div>
+<div class="write_r">
+    <form method="post" action="/update_p">
+        {% csrf_token %}
+    <textarea class="textarea" name="body"></textarea>
+        <input type="text" name="pid" class="text_pid" style="display: none">
+        <input type="submit" value="发布文章">
+        </form>
+</div>
+
+
+
+  </body>
+</html>
+
+

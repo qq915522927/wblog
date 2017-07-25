@@ -1,0 +1,26 @@
+html,body {
+    height: 100%;
+    width: 100%;
+        font-family: Georgia, "Times New Roman", Times, "Songti SC", serif;
+}
+
+
+li{list-style-type: none;}
+.write_l{height:100%;  width: 20%;float: left;background: #3f3f3f;}
+
+
+.write_m{height: 100%;  width:20%;float: left;text-align: center; border-right: 1px solid #9C9C9C;overflow-y:scroll;}
+.write_r{height: 100%;  width: 60%;float: left;overflow-y:scroll;}
+.to_index{width: 100px;height:35px;border: solid 1px #ec7259;border-radius:2px;text-align: center;margin:40px 20px 40px 20px;}
+.to_index a{color:#ec7259; font-size: 20px;margin: auto auto;line-height: 35px;}
+.new_classify a{color: #fff;font-size: 18px;padding: 4px;border: solid 1px #fff;margin-left: 20px;border-radius:2px;}
+.list_classify{float: left;margin-top: 30px;width: 200px;}
+.list_classify a{color: #fff;}
+.list_classify li{margin-top: 10px;}
+.del_classify{float: right;}
+.del_post{float: right;margin-right:20px;}
+.post_list{width: 100%;margin: 20px auto;clear: both;padding-top: 20px;padding-bottom:20px;border-top: solid 1px #9F9F9F; }
+
+
+.textarea{height: 100%;overflow-y:scroll;}
+.title{float: left;color: #000000;margin-left: 20px;}

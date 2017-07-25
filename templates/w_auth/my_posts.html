@@ -1,0 +1,52 @@
+{% extends 'w_auth/base.html' %}
+
+{% block right_content %}
+<div class="post_list">
+    <div><h3>共篇{{ pcount }}文章</h3></div>
+
+{% for post in posts %}
+<div class="post_one">
+
+    <div class="author">
+      <a class="avatar" target="_blank" href="/user/base_info/{{ user.id }}">
+        <img src="//upload.jianshu.io/users/upload_avatars/2257864/7ea45e3a8135.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96" alt="96">
+</a>      <div class="name">
+        <a class="blue-link" target="_blank" href="/user/base_info/{{ user.id }}">{{ user.uname }}</a>
+        <br>
+        <span class="time" >{{ post.publish }}</span>
+      </div>
+    </div>
+
+    <div class="right_post_list">
+    <a class="ptitle" target="_blank" href="/post/{{ post.slug }}">{{ post.title }}</a>
+
+    <p class="abstract">
+      {{ post.body|slice:'20'}}...
+    </p>
+        </div>
+{#    <div class="meta">#}
+{#      <a target="_blank" href="/p/f572affd0cbf">#}
+{#        <i class="iconfont ic-list-read"></i> 0#}
+{#</a>        <a target="_blank" href="/p/f572affd0cbf#comments">#}
+{#          <i class="iconfont ic-list-comments"></i> 0#}
+{#</a>      <span><i class="iconfont ic-list-like"></i> 0</span>#}
+{#    </div>#}
+  </div>
+    {% empty %}<h2>该分类下没哟文章!</h2>
+{% endfor %}
+</div>
+
+
+    <div class="side_classify">
+
+    <h4>文章分类</h4>
+    <ul>
+        {%  for classify in classifies %}
+        <li><a href="/user/posts/{{ user.id }}?c={{ classify.id }}">{{ classify.title }}</a> <i style="color:red;margin-left: 25px;">{{ classify.pcount }}</i></li>
+        {% empty %}<li>他还没有分类</li>
+        {% endfor %}
+    </ul>
+
+    </div>
+
+{% endblock %}
