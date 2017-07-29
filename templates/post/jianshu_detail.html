@@ -1,0 +1,23 @@
+{% extends 'post/base.html' %}
+{% block body_contnt %}
+
+    <div style="width: 100%;text-align: center;">
+    <div class="center_content">
+
+        <h3>{{ post.title|safe }}</h3>
+        <p>{{ post.datetime }}</p>
+        <p style="margin: 15px 0;"><a target="_blank" href="http://www.jianshu.com/p/{{ post.slug }}">原文链接：http://www.jianshu.com/p/{{ post.slug }}</a></p>
+        <p>{{ post.author|safe }}</p>
+
+        <div class="content_post">
+
+            {{ post.content|safe }}
+        </div>
+
+
+
+    </div>
+
+    </div>
+
+{% endblock %}

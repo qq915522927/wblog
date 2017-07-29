@@ -70,3 +70,13 @@ class Classify(models.Model):
 
         }
         return d
+
+class JianShuPost(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    content = models.TextField()
+    intro = models.CharField(max_length=500)
+    datetime = models.DateTimeField()
+    author_id=models.IntegerField()
+    keyword = models.CharField(max_length=50,null=True)

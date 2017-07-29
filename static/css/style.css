@@ -3724,3 +3724,25 @@ clear: both;}
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;}
+
+.center_content{
+	width: 70%;
+	margin: 0 auto;
+	text-align:left;
+}
+.post_jianshu{
+	width: 70%;
+	height: 100%;
+	margin-top: 30px;
+	margin-left: auto;
+	text-align: left;
+
+}
+
+.pagenation{height:32px;text-align:center;font-size:0;margin:30px auto;}
+.pagenation a{display:inline-block;border:1px solid #d2d2d2;background-color:#f8f6f7;font-size:12px;padding:7px 10px;color:#666;margin:5px}
+
+.pagenation .active{background-color:#fff;color:#43a200}
+.content_post h3{margin-top: 20px;}
+.content_post p{font-size: 18px;font-weight: 400;}
+.content_post img{width: 100%;}

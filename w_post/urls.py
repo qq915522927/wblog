@@ -12,5 +12,9 @@ urlpatterns = [
     url(r'^add_c$',views.add_classify),
     url(r'^add_p$',views.add_post),
     url(r'^update_p$',views.update_post),
+    url(r'^spider$',views.splider_post),
+    url(r'^jianshu$',views.jianshu),
+    url(r'^jianshu_detail/slug=(\w+)$',views.jianshu_detail),
+
 
 ]

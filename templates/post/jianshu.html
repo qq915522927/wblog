@@ -1,0 +1,48 @@
+{% extends 'post/base.html' %}
+{% block body_contnt %}
+
+
+     <div class="side_classify" style="margin-left: 50px;">
+
+    <h4>关键词</h4>
+    <ul>
+        {%  for item in kws %}
+        <li><a href="/jianshu?q={{ item.keyword }}&p=1"> {{ item.keyword }}</a> </li>
+        {% empty %}<li>他还没有分类</li>
+        {% endfor %}
+    </ul>
+
+    </div>
+<div style="width: 100%;text-align: center;">
+    {% for post in page %}
+        <div class="post_jianshu">
+       <h3> <a href="/jianshu_detail/slug={{ post.slug }}">{{ post.title|safe }}</a> </h3><span class="time" >{{ post.datetime }}</span><br>
+        <a>{{ post.author|safe }}</a>
+{#        <p class="abstract">{{ post.intro|safe }}</p>#}
+        </div>
+        {% empty %}没有
+
+    {% endfor %}
+
+<div class="pagenation">
+{#            判断是否是第一页#}
+{#                {% if page.number  == 1 %}#}
+{#				<a href="/jianshu?q={{ kw }}&p={{ page.previous_page_number }}">上一页</a>#}
+{#                {% endif %}#}
+{#            paginator.page_range为页码总数#}
+                {% for pindex in paginator.page_range %}
+{#                    是否为当前页#}
+                    {% if page.number == pindex %}
+				    <a href="/jianshu?q={{ kw }}&p={{ pindex }}" class="active">{{ pindex }}</a>
+                    {% else %}
+				    <a href="/jianshu?q={{ kw }}&p={{ pindex }}">{{ pindex }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+				<a href="/jianshu?q={{ kw }}&p={{ page.next_page_number }}">下一页></a>
+                {% endif %}
+			</div>
+</div>
+
+
+{% endblock %}
