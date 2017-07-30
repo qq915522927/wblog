@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from w_auth.user_decorator import is_login
 # Create your views here.
 def index(request):
-    return render(request, 'post/index.html  ')
+    return render(request, 'post/index.html')
 
 def get_post(request,slug):
     post = Post.my_objects.get_active_one(slug)
@@ -19,7 +19,10 @@ def get_post(request,slug):
 @is_login
 def write_post(request):
     uid = request.session.get('uid')
-    cid = Classify.objects.filter(owner_id=int(uid)).first().id
+    try:
+        cid = Classify.objects.filter(owner_id=int(uid)).first().id
+    except:
+        cid = None
     context = {'title':'写文章',
                'cid':cid}
     return render(request,'post/write.html',context)
@@ -93,9 +96,12 @@ def jianshu(requst):
     kws = JianShuPost.objects.values('keyword').distinct()
 
     posts = JianShuPost.objects.filter(keyword=kw).all()
-    paginator =Paginator(posts,10,allow_empty_first_page=False)
-    page = paginator.page(pindex)
-
+    try:
+        paginator =Paginator(posts,10)
+        page = paginator.page(pindex)
+    except:
+        paginator = None
+        page = None
     context ={
         'title':'简书文章',
         'page':page,

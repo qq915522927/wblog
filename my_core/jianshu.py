@@ -47,7 +47,7 @@ def manage(start,end,kw):
             p.datetime=datetime.strptime(post['first_shared_at'], '%Y-%m-%dT%H:%M:%S.000Z')
             p.author=post['user']['nickname']
             p.author_id=int(post['user']['id'])
-            p.intro = post['content']
+            p.intro = ''
             p.keyword = kw
 
             content = load_detail(p.slug)
