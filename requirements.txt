@@ -2,7 +2,7 @@ certifi==2017.7.27.1
 chardet==3.0.4
 Django==1.11.3
 idna==2.5
-lxml==3.8.0
+lxml==4.6.2
 Markdown==2.6.8
 PyMySQL==0.7.11
 pytz==2017.2
